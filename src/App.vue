@@ -1,17 +1,32 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1 class=title>{{name}}</h1>
+    <p>{{clicks}}</p>
+    <div class=square v-on:click="clicker($event)"></div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import About from './components/About.vue'
+
+
 
 export default {
   name: 'app',
+  data() {
+    return {
+      name: "@Przemek Bielak",
+      clicks: 0,
+    }
+  },
   components: {
-    HelloWorld
+    About
+  },
+  methods: {
+    clicker: function(event) {
+      console.log("clicked!");
+      this.clicks++;
+    }
   }
 }
 </script>
@@ -21,8 +36,20 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
   margin-top: 60px;
+  /* font-size: 62.5%; */
 }
+
+.title {
+  font-size: 3.6rem;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: black;
+}
+
 </style>
