@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import About from './components/About.vue'
+// import About from './components/About.vue'
 
 
 
@@ -20,11 +20,11 @@ export default {
     }
   },
   components: {
-    About
+    // About
   },
   methods: {
     clicker: function(event) {
-      console.log("clicked!");
+      console.log(event);
       this.clicks++;
     }
   }
