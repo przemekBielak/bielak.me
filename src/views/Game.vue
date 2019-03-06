@@ -1,6 +1,8 @@
 <template>
     <div>
-        <h1 class="Title">Super Game in JS {{count}}</h1>
+        <h1 class="Title">Super Game in JS</h1>
+        x: {{x}}
+        y: {{y}}
         <canvas id="canvas" ref="canvas" width="480" height="320"></canvas>
     </div>
 </template>
@@ -12,19 +14,25 @@ export default {
     name: 'Game',
     data: function() {
         return {
-            count: 0,
+            x: 2,
+            y: 5,
+            ballRadius: 10,
+            canvas: this.$refs.canvas,
+        }
+    },
+    computed: {
+        ctx: function() {
+            return canvas.getContext("2d")
         }
     },
     methods: {
         udpateCanvas: function() {
-            var c = this.$refs.canvas;
-            var ctx = c.getContext("2d");
-            ctx.moveTo(0, 0);
-            ctx.lineTo(200, 200);
-            ctx.stroke();
+            this.ctx.moveTo(0, 0);
+            this.ctx.lineTo(200, 200);
+            this.ctx.stroke();
         },
         draw: function() {
-            this.count++;
+            
         },
     },
     mounted: function() {
