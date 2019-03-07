@@ -13,6 +13,11 @@
         <a class="info" v-bind:href="workplaceLink">{{workplace}}</a>
       </li>
     </ul>
+
+    <div class="footer">
+      <button class="footer-button">Github</button>
+      <button class="footer-button">Contact me</button>
+    </div>
   </div>
 </template>
 
@@ -45,11 +50,11 @@ export default {
   }
 
   .greeting {
-    font-size: 3em;
+    font-size: 4em;
   }
 
   .intro {
-    font-size: 1.6em;
+    font-size: 2em;
   }
 
   .main-points {
@@ -59,19 +64,43 @@ export default {
   }
 
   .main-points li {
-    content: "-->";
     padding-top: 10px;
   }
 
   .main-points li::before {
-        content: ">  ";
-
+        content: ">";
+        padding-right: 20px;
   }
 
   .info {
     color: #3D9970;
     text-decoration: none;
   }
+
+
+  .footer {
+    margin-top: 50px;
+    width: 100%;
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .footer-button {
+    background-color: white;
+    border: 1px #3D9970 solid;
+    border-radius: 2px;
+    text-decoration: none;
+    margin: 0 10px;
+    outline: none;
+    font-size: 1.4em;
+  }
+
+  .footer-button:active {
+    border-style: outset;
+  }
+
 
 </style>
 
