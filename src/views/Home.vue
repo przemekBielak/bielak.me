@@ -4,7 +4,7 @@
     <p class="intro">I'm a software developer</p>
     <ul class="main-points">
       <li>Currently working on 
-        <a class="info" v-bind:href="workingOnLink">{{repoName}}</a>
+        <a class="info" v-bind:href="commitLink">{{repoName}}</a>
       </li>
       <li>Written this post 
         <a class="info" v-bind:href="postLink">{{post}}</a>
@@ -27,15 +27,11 @@ export default {
   name: 'home',
   data: function() {
     return {
-      workingOn: "this website",
-      workingOnLink: "https://www.google.com/",
       post: "this post",
       postLink: "https://www.google.com/",
       workplace: "AVL",
       workplaceLink: "https://www.google.com/",
       repoName: '',
-      commitName: '',
-      commitHash: '',
       commitLink: '',
     }
   },
@@ -54,27 +50,23 @@ export default {
     },
     test: function() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.onreadystatechange = function() { 
+      xmlHttp.onreadystatechange = function(vm) { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
           var contentJSON = JSON.parse(xmlHttp.responseText);
           
           for(var event = 0; event < contentJSON.length; event++) {
             if(contentJSON[event].type == "PushEvent") {
-              console.log(contentJSON[event].repo.name);
-              console.log(contentJSON[event].repo.url)
-              console.log(contentJSON[event].payload.head)
-              console.log(contentJSON[event]);
-              var commitLink = "github.com/" + contentJSON[event].repo.name + "/commit/" + contentJSON[event].payload.head;
-              console.log(commitLink);
+              this.repoName = contentJSON[event].repo.name;
+              this.commitLink  = "https://github.com/" + contentJSON[event].repo.name + "/commit/" + contentJSON[event].payload.head;
               break;
             }
           }
         }
-      }
+      }.bind(this)
       xmlHttp.open("GET", "https://api.github.com/users/przemekBielak/events", true); // true for asynchronous 
       xmlHttp.send(null);
     },
-  }
+  },
 }
 </script>
 
