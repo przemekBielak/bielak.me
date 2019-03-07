@@ -3,41 +3,47 @@
         <h1 class="Title">Super Game in JS</h1>
         x: {{x}}
         y: {{y}}
-        <canvas id="canvas" ref="canvas" width="480" height="320"></canvas>
+        <canvas id="canvas" ref="canvasRef" width="480" height="320"></canvas>
     </div>
 </template>
 
 <script>
-import Vue from 'vue';
 
 export default {
     name: 'Game',
     data: function() {
         return {
-            x: 2,
-            y: 5,
             ballRadius: 10,
-            canvas: this.$refs.canvas,
+            x: 0,
+            y: 0,
         }
     },
     computed: {
-        ctx: function() {
-            return canvas.getContext("2d")
-        }
     },
     methods: {
-        udpateCanvas: function() {
-            this.ctx.moveTo(0, 0);
-            this.ctx.lineTo(200, 200);
-            this.ctx.stroke();
-        },
-        draw: function() {
-            
-        },
+
     },
     mounted: function() {
-        this.udpateCanvas();
-        requestAnimationFrame(this.draw);
+        let cnvs, ctx
+        cnvs = this.$refs['canvasRef'];
+        ctx = cnvs.getContext('2d');
+        this.x = 5;
+        this.y = 10;
+
+        function drawBall () {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.ballRadius, 0, Math.PI*2);
+            ctx.fillStyle = "blue";
+            ctx.fill();
+            ctx.closePath();
+        }
+        function draw () {
+            drawBall();
+        }
+
+
+        draw();
+        requestAnimationFrame(draw);
     }
 }
 
