@@ -4,7 +4,7 @@
     <p class="intro">I'm a software developer</p>
     <ul class="main-points">
       <li>Currently working on 
-        <a class="info" v-bind:href="workingOnLink">{{workingOn}}</a>
+        <a class="info" v-bind:href="workingOnLink">{{repoName}}</a>
       </li>
       <li>Written this post 
         <a class="info" v-bind:href="postLink">{{post}}</a>
@@ -17,7 +17,6 @@
     <div class="footer">
       <button v-on:click="goToGithub" class="footer-button">Github</button>
       <button v-on:click="mailTo" class="footer-button">Contact me</button>
-      <button v-on:click="test" class="footer-button">test</button>
     </div>
   </div>
 </template>
@@ -34,10 +33,17 @@ export default {
       postLink: "https://www.google.com/",
       workplace: "AVL",
       workplaceLink: "https://www.google.com/",
+      repoName: '',
+      commitName: '',
+      commitHash: '',
+      commitLink: '',
     }
   },
   components: {
     
+  },
+  beforeMount: function() {
+    this.test();
   },
   methods: {
     goToGithub: function() {
@@ -50,10 +56,22 @@ export default {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-          console.log(xmlHttp.responseText);
+          var contentJSON = JSON.parse(xmlHttp.responseText);
+          
+          for(var event = 0; event < contentJSON.length; event++) {
+            if(contentJSON[event].type == "PushEvent") {
+              console.log(contentJSON[event].repo.name);
+              console.log(contentJSON[event].repo.url)
+              console.log(contentJSON[event].payload.head)
+              console.log(contentJSON[event]);
+              var commitLink = "github.com/" + contentJSON[event].repo.name + "/commit/" + contentJSON[event].payload.head;
+              console.log(commitLink);
+              break;
+            }
+          }
         }
       }
-      xmlHttp.open("GET", "https://api.github.com/users/przemekBielak/repos", true); // true for asynchronous 
+      xmlHttp.open("GET", "https://api.github.com/users/przemekBielak/events", true); // true for asynchronous 
       xmlHttp.send(null);
     },
   }
