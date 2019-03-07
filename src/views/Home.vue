@@ -15,8 +15,8 @@
     </ul>
 
     <div class="footer">
-      <button class="footer-button">Github</button>
-      <button class="footer-button">Contact me</button>
+      <button v-on:click="goToGithub" class="footer-button">Github</button>
+      <button v-on:click="mailTo" class="footer-button">Contact me</button>
     </div>
   </div>
 </template>
@@ -37,6 +37,14 @@ export default {
   },
   components: {
     
+  },
+  methods: {
+    goToGithub: function() {
+      location.href= "https://github.com/przemekBielak";
+    },
+    mailTo: function() {
+      location.href= "mailto:przemyslaw.bielak@protonmail.com";
+    }
   }
 }
 </script>
@@ -88,6 +96,10 @@ export default {
   }
 
   .footer-button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
     background-color: white;
     border: 1px #3D9970 solid;
     border-radius: 2px;
