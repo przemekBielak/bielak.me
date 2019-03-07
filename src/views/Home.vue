@@ -17,6 +17,7 @@
     <div class="footer">
       <button v-on:click="goToGithub" class="footer-button">Github</button>
       <button v-on:click="mailTo" class="footer-button">Contact me</button>
+      <button v-on:click="test" class="footer-button">test</button>
     </div>
   </div>
 </template>
@@ -44,7 +45,17 @@ export default {
     },
     mailTo: function() {
       location.href= "mailto:przemyslaw.bielak@protonmail.com";
-    }
+    },
+    test: function() {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+          console.log(xmlHttp.responseText);
+        }
+      }
+      xmlHttp.open("GET", "https://api.github.com/users/przemekBielak/repos", true); // true for asynchronous 
+      xmlHttp.send(null);
+    },
   }
 }
 </script>
