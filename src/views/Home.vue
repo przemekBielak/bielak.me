@@ -9,8 +9,10 @@
       <li>Written this post 
         <a class="info" v-bind:href="postLink">{{post}}</a>
       </li>
-      <li>Work in 
-        <a class="info" v-bind:href="workplaceLink">{{workplace}}</a>
+      <li>Work 
+        <a class="info" v-bind:href="workplaceLink">@{{workplace}}</a>
+        as
+        <a class="info" v-bind:href="linkedinProfileLink">{{workPosition}}</a>
       </li>
     </ul>
 
@@ -30,16 +32,20 @@ export default {
       post: "this post",
       postLink: "https://www.google.com/",
       workplace: "AVL",
-      workplaceLink: "https://www.google.com/",
+      workplaceLink: "https://www.avl-functions.com/en/",
+      linkedinProfileLink: 'https://www.linkedin.com/in/przemys%C5%82aw-bielak-052343122/',
+      workPosition: 'Embedded Software Developer',
       repoName: '',
       commitLink: '',
+      email: 'przemyslaw.bielak@protonmail.com'
     }
   },
   components: {
     
   },
   beforeMount: function() {
-    this.test();
+    this.repoName = "loading..."
+    this.updateGithubInfo();
   },
   methods: {
     goToGithub: function() {
@@ -48,22 +54,25 @@ export default {
     mailTo: function() {
       location.href= "mailto:przemyslaw.bielak@protonmail.com";
     },
-    test: function() {
+    updateGithubInfo: function() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.onreadystatechange = function(vm) { 
+      xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
           var contentJSON = JSON.parse(xmlHttp.responseText);
           
           for(var event = 0; event < contentJSON.length; event++) {
             if(contentJSON[event].type == "PushEvent") {
-              this.repoName = contentJSON[event].repo.name;
-              this.commitLink  = "https://github.com/" + contentJSON[event].repo.name + "/commit/" + contentJSON[event].payload.head;
+              var PayloadMail = contentJSON[event].payload.commits.slice(-1).pop().author.email;
+              if (PayloadMail === this.email) {
+                this.repoName = contentJSON[event].repo.name;
+                this.commitLink  = "https://github.com/" + contentJSON[event].repo.name + "/commit/" + contentJSON[event].payload.head;
+              }
               break;
             }
           }
         }
       }.bind(this)
-      xmlHttp.open("GET", "https://api.github.com/users/przemekBielak/events", true); // true for asynchronous 
+      xmlHttp.open("GET", "https://api.github.com/users/przemekBielak/events/public", true);
       xmlHttp.send(null);
     },
   },
@@ -113,7 +122,7 @@ export default {
     height: 35px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .footer-button {
@@ -125,7 +134,7 @@ export default {
     border: 1px #3D9970 solid;
     border-radius: 2px;
     text-decoration: none;
-    margin: 0 10px;
+    margin-right: 10px;
     outline: none;
     font-size: 1.4em;
   }
