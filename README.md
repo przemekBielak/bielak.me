@@ -5,7 +5,7 @@ My personal website.
 Website is a portfolio of all my projects, contact info. Was created using vue and is hosted on a private server using nginx.
  
 ## Screenshots
-![ScreenShot](https://{https://imgur.com/a/L2i3qQL})
+![ScreenShot](https://{https://i.imgur.com/j1jIWsr.png})
 
 ## Tech/framework used
 
