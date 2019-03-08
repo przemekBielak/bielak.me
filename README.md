@@ -1,11 +1,10 @@
-## Project title
-My personal website.
+## My personal website.
 
 ## Motivation
 Website is a portfolio of all my projects, contact info. Was created using vue and is hosted on a private server using nginx.
  
 ## Screenshots
-![ScreenShot](https://{https://i.imgur.com/j1jIWsr.png})
+![ScreenShot](https://i.imgur.com/j1jIWsr.png)
 
 ## Tech/framework used
 
