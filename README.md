@@ -13,13 +13,15 @@ Website is a portfolio of all my projects, contact info. Was created using vue a
 - [Nginx](https://www.nginx.com/)
 
 ## Features
-Website is running on a private server.
-Nginx docker container is used as a reversed proxy to the website hosted also by nginx.
-SSL certificate was granted using LetsEncrypt.
+Website is running on a private server.  
+Nginx docker container is used as a reversed proxy to the website hosted also by nginx.  
+SSL certificate was granted using LetsEncrypt.  
+
+Website is using Github API to automatically embed my current commit link to the website under "Currently working on"
 
 ## Installation
-Run in development mode: npm run serve
-Deployment build: npm run build
+Run in development mode: npm run serve  
+Deployment build: npm run build  
 
 ## Tests
 Describe and show how to run the tests with code examples.
