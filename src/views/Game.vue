@@ -14,36 +14,37 @@ export default {
     data: function() {
         return {
             ballRadius: 10,
-            x: 0,
-            y: 0,
+            cnvs: '',
         }
     },
     computed: {
+        ctx: function() {
+            return this.cnvs.getContext("2d")
+        },
+        x: function() {
+            return this.cnvs.height
+        },
+        y: function() {
+            return 5;
+        }
     },
     methods: {
-
+        drawBall: function() {
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.ballRadius, 0, Math.PI*2);
+            this.ctx.fillStyle = "blue";
+            this.ctx.fill();
+            this.ctx.closePath();
+        },
+        draw: function() {
+            this.drawBall();
+        },
     },
-    mounted: function() {
-        let cnvs, ctx
-        cnvs = this.$refs['canvasRef'];
-        ctx = cnvs.getContext('2d');
-        this.x = 5;
-        this.y = 10;
-
-        function drawBall () {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.ballRadius, 0, Math.PI*2);
-            ctx.fillStyle = "blue";
-            ctx.fill();
-            ctx.closePath();
-        }
-        function draw () {
-            drawBall();
-        }
-
-
-        draw();
-        requestAnimationFrame(draw);
+    created: function() {
+        this.cnvs = this.$refs['canvasRef']
+        console.log(this.cnvs)
+        this.draw();
+        requestAnimationFrame(this.draw);
     }
 }
 

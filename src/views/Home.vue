@@ -43,7 +43,7 @@ export default {
   components: {
     
   },
-  beforeMount: function() {
+  created: function() {
     this.repoName = "loading..."
     this.updateGithubInfo();
   },
@@ -52,7 +52,7 @@ export default {
       location.href= "https://github.com/przemekBielak";
     },
     mailTo: function() {
-      location.href= "mailto:przemyslaw.bielak@protonmail.com";
+      location.href= "mailto:" + this.email;
     },
     updateGithubInfo: function() {
       var xmlHttp = new XMLHttpRequest();
@@ -65,7 +65,7 @@ export default {
               var PayloadMail = contentJSON[event].payload.commits.slice(-1).pop().author.email;
               if (PayloadMail === this.email) {
                 this.repoName = contentJSON[event].repo.name;
-                this.commitLink  = "https://github.com/" + contentJSON[event].repo.name + "/commit/" + contentJSON[event].payload.head;
+                this.commitLink = "https://github.com/" + contentJSON[event].repo.name + "/commit/" + contentJSON[event].payload.head;
               }
               break;
             }

@@ -1,29 +1,34 @@
-# bielak.me
+## Project title
+My personal website.
 
-## Project setup
-```
-npm install
-```
+## Motivation
+Website is a portfolio of all my projects, contact info. Was created using vue and is hosted on a private server using nginx.
+ 
+## Screenshots
+![ScreenShot](https://{https://imgur.com/a/L2i3qQL})
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Tech/framework used
 
-### Compiles and minifies for production
-```
-npm run build
-```
+<b>Built with</b>
+- [Vue](https://vuejs.org/)
+- [Nginx](https://www.nginx.com/)
 
-### Run your tests
-```
-npm run test
-```
+## Features
+Website is running on a private server.
+Nginx docker container is used as a reversed proxy to the website hosted also by nginx.
+SSL certificate was granted using LetsEncrypt.
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Installation
+Run in development mode: npm run serve
+Deployment build: npm run build
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Tests
+Describe and show how to run the tests with code examples.
+
+
+#### Anything else that seems useful
+
+## License
+A short snippet describing the license (MIT, Apache etc)
+
+MIT © [Przemysław Bielak]()
