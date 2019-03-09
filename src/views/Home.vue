@@ -3,23 +3,24 @@
     <h1 class="greeting">Hi,</h1>
     <p class="intro">I'm a software developer</p>
     <ul class="main-points">
-      <li>Currently working on 
-        <a class="info" v-bind:href="commitLink">{{repoName}}</a>
-      </li>
-      <li>Written this post 
-        <a class="info" v-bind:href="postLink">{{post}}</a>
-      </li>
       <li>Work 
         <a class="info" v-bind:href="workplaceLink">@{{workplace}}</a>
         as
         <a class="info" v-bind:href="linkedinProfileLink">{{workPosition}}</a>
       </li>
+      <li>Currently working on 
+        <a class="info" v-bind:href="commitLink">{{repoName}}</a>
+      </li>
+      <li>Created
+        <router-link to="/projects/" class="info" v-bind:href="postLink">these</router-link>
+        projects
+      </li>
+
     </ul>
 
     <div class="footer">
       <button v-on:click="goToGithub" class="footer-button">Github</button>
       <button v-on:click="mailTo" class="footer-button">Contact me</button>
-      <router-link to="/blog" tag="button" class="footer-button">Blog</router-link>
     </div>
   </div>
 </template>
@@ -115,7 +116,6 @@ export default {
     color: #3D9970;
     text-decoration: none;
   }
-
 
   .footer {
     margin-top: 50px;
