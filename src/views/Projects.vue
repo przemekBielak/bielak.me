@@ -16,7 +16,7 @@
 <script>
 
 const myGithubLink = "https://github.com/przemekBielak/";
-const excludedLanguages = ['Vim script'];
+const excludedLanguages = ['Vim script', 'QMake', 'Batchfile', 'Makefile', 'CMake', 'OpenSCAD', 'TeX'];
 
 export default {
     name: 'projects',
@@ -33,7 +33,6 @@ export default {
                 }
             ],
             loaded: false,
-            test: []
         }
     },
     methods: {
@@ -69,6 +68,9 @@ export default {
                         }
                     }
                     this.projects[i].languages = [...arr];
+                    if(i == this.projects.length - 1) {
+                        this.loaded = true;
+                    }
                 }
             }.bind(this)
             xmlHttp.open("GET", link, true);
@@ -77,7 +79,6 @@ export default {
     },
     created: function() {
         this.getProjects();
-        this.loaded = true;
     }
 }
 </script>
