@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="repoName">
     <h1 class="greeting">Hi,</h1>
     <p class="intro">I'm a software developer, who</p>
     <ul class="main-points">
@@ -9,10 +9,6 @@
         <a class="info" v-bind:href="linkedinProfileLink">{{workPosition}}</a>
       </li>
       <li>Currently working on 
-        <MyLoader v-if="!commitLink"
-          :speed="2"
-          :animate="true"
-        ></MyLoader>
         <a class="info" v-bind:href="commitLink">{{repoName}}</a>
       </li>
       <li>Created
@@ -65,7 +61,6 @@ export default {
     MyLoader,
   },
   created: function() {
-    this.repoName = "loading..."
     this.updateGithubInfo();
   },
   methods: {

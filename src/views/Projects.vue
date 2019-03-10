@@ -1,10 +1,6 @@
 <template>
-    <div class="home">
+    <div class="home" v-if="projects[0].name">
         <h1 class="greeting">Projects.</h1>
-        <content-loader v-if="!projects[0].name"
-            :speed="2"
-            :animate="true"
-        ></content-loader>
         <ul class="main-points">
             <li v-for="project in projects" :key="project.name">
                 <a class="info" v-bind:href="project.link">{{project.name}}</a>
