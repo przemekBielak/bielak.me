@@ -98,16 +98,21 @@ export default {
   .main-points {
     font-size: 1.6em;
     list-style-type: none;
+    margin-left: 0;
     padding-left: 0;
+    list-style-position: outside; 
+    list-style-type: none;
   }
 
   .main-points li {
     padding-top: 10px;
+    padding-left: 1em;
+    text-indent: -1em;
   }
 
   .main-points li::before {
-        content: ">";
-        padding-right: 20px;
+    content: "> ";
+    padding-right: 5px;
   }
 
   .info {

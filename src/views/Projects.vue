@@ -11,6 +11,9 @@
             *Information is automatically downloaded using GitHub API.
         </p>
     </div>
+    <div v-else class="home">
+        <h1 class="greeting">Loading GitHub data...</h1>
+    </div>
 </template>
 
 <script>
@@ -68,6 +71,8 @@ export default {
                         }
                     }
                     this.projects[i].languages = [...arr];
+
+                    // set loaded flag when all projects received github data
                     if(i == this.projects.length - 1) {
                         this.loaded = true;
                     }
@@ -89,4 +94,9 @@ export default {
     margin-top: 40px;
     font-size: 1.6em;
 }
+
+.loading {
+    font-size: 1.6em;
+}
+
 </style>
