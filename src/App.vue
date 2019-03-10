@@ -12,8 +12,21 @@
   font-family: 'Source Sans Pro', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  
   font-size: 10px;
+}
+
+@media only screen and (min-width: 801px) {
+  #app {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  #app {
+    text-align: left;
+    margin-left: 30px;
+  }
 }
 
 </style>

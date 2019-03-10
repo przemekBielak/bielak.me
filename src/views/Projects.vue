@@ -10,14 +10,12 @@
 </template>
 
 <script>
-import { ContentLoader } from 'vue-content-loader';
 
 const myGithubLink = "https://github.com/przemekBielak/";
 
 export default {
     name: 'projects',
     components: {
-        ContentLoader
     },
     data: function() {
         return {

@@ -26,21 +26,6 @@
 </template>
 
 <script>
-import { ContentLoader } from 'vue-content-loader';
-
-const MyLoader = props => (
-	<ContentLoader 
-		rtl
-		height={16}
-		width={300}
-		speed={2}
-		primaryColor="#f3f3f3"
-		secondaryColor="#ecebeb"
-		{...props}
-	>
-		<rect x="3" y="4" rx="5" ry="5" width="60" height="10" />
-	</ContentLoader>
-)
 
 export default {
   name: 'home',
@@ -58,7 +43,6 @@ export default {
     }
   },
   components: {
-    MyLoader,
   },
   created: function() {
     this.updateGithubInfo();
@@ -99,8 +83,8 @@ export default {
   .home {
     margin-top: 20%;
     text-align: left;
+    max-width: 700px;
     display: inline-block;
-    max-width: 500px;
   }
 
   .greeting {
