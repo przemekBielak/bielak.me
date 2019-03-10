@@ -112,11 +112,11 @@ export default {
 
   .info {
     color: #3D9970;
-    text-decoration: none;
+    /* text-decoration: none; */
   }
 
   li {
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   .footer {
