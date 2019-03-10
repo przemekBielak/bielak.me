@@ -1,6 +1,10 @@
 <template>
     <div class="home">
-        <h1 class="greeting">Projects</h1>
+        <h1 class="greeting">Projects.</h1>
+        <content-loader v-if="!projects[0].name"
+            :speed="2"
+            :animate="true"
+        ></content-loader>
         <ul class="main-points">
             <li v-for="project in projects" :key="project.name">
                 <a class="info" v-bind:href="project.link">{{project.name}}</a>
@@ -10,17 +14,22 @@
 </template>
 
 <script>
+import { ContentLoader } from 'vue-content-loader';
+
 const myGithubLink = "https://github.com/przemekBielak/";
 
 export default {
     name: 'projects',
+    components: {
+        ContentLoader
+    },
     data: function() {
         return {
             projects: [
                 {
-                    name: '',
-                    link: '',
-                    description: ''
+                    name: null,
+                    link: null,
+                    description: null
                 }
             ],
         }
