@@ -4,7 +4,7 @@
         <ul class="main-points">
             <li v-for="project in projects" :key="project.name">
                 <a class="info" v-bind:href="project.link">{{project.name}}</a>
-                <span v-for="(val, key) in project.languages" :key="key"> {{key}} </span>
+                <span v-for="lang in project.languages" :key="lang"> {{lang}} </span>
             </li>
         </ul>
         <p class="remarks">
@@ -16,6 +16,7 @@
 <script>
 
 const myGithubLink = "https://github.com/przemekBielak/";
+const excludedLanguages = ['Vim script'];
 
 export default {
     name: 'projects',
@@ -28,10 +29,11 @@ export default {
                     name: null,
                     link: null,
                     languageLink: null,
-                    languages: null
+                    languages: []
                 }
             ],
             loaded: false,
+            test: []
         }
     },
     methods: {
@@ -50,7 +52,6 @@ export default {
                         this.getProjectsLangs(this.projects[i].languageLink, i);
                     }
                 }
-                this.loaded = true;
             }.bind(this)
             xmlHttp.open("GET", "https://api.github.com/users/przemekBielak/repos", true);
             xmlHttp.send(null);
@@ -60,7 +61,14 @@ export default {
             xmlHttp.onreadystatechange = function() { 
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                     var contentJSON = JSON.parse(xmlHttp.responseText);
-                    this.projects[i].languages = contentJSON;
+
+                    var arr = [];
+                    for(var key in contentJSON) {
+                        if(!excludedLanguages.includes(key)) {
+                            arr.push(key);
+                        }
+                    }
+                    this.projects[i].languages = [...arr];
                 }
             }.bind(this)
             xmlHttp.open("GET", link, true);
@@ -69,6 +77,7 @@ export default {
     },
     created: function() {
         this.getProjects();
+        this.loaded = true;
     }
 }
 </script>
