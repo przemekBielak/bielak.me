@@ -19,13 +19,15 @@
 @media only screen and (min-width: 801px) {
   #app {
     text-align: center;
+    margin-top: 20%;
   }
 }
 
 @media only screen and (max-width: 800px) {
   #app {
-    text-align: left;
-    margin-left: 30px;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
   }
 }
 

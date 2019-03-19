@@ -81,7 +81,6 @@ export default {
 
 <style>
   .home {
-    margin-top: 20%;
     text-align: left;
     max-width: 700px;
     display: inline-block;

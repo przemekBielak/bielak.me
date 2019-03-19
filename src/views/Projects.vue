@@ -12,7 +12,7 @@
         </p>
     </div>
     <div v-else class="home">
-        <h1 class="greeting">Loading GitHub data...</h1>
+        <h1 class="ascii">{{loadProjectView}}</h1>
     </div>
 </template>
 
@@ -20,6 +20,13 @@
 
 const myGithubLink = "https://github.com/przemekBielak/";
 const excludedLanguages = ['Vim script', 'QMake', 'Batchfile', 'Makefile', 'CMake', 'OpenSCAD', 'TeX'];
+
+const ASCIIs = ["-",
+				"/",
+				"|",
+                "\\"];
+                
+const frequency = 50;
 
 export default {
     name: 'projects',
@@ -36,6 +43,15 @@ export default {
                 }
             ],
             loaded: false,
+            counter: 0,
+        }
+    },
+    computed: {
+        loadProjectView: function() {
+            setTimeout(() => {
+                this.counter = (this.counter + 1) % 4;
+            }, frequency)
+            return ASCIIs[this.counter];
         }
     },
     methods: {
@@ -97,6 +113,12 @@ export default {
 
 .loading {
     font-size: 1.6em;
+}
+
+.ascii {
+    font-size: 4em;
+    font-weight: bold;
+    text-align: center;
 }
 
 </style>
