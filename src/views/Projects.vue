@@ -22,11 +22,12 @@ const myGithubLink = "https://github.com/przemekBielak/";
 const excludedLanguages = ['Vim script', 'QMake', 'Batchfile', 'Makefile', 'CMake', 'OpenSCAD', 'TeX'];
 
 const ASCIIs = ["—",
-				"/",
+                "\\",
 				"|",
-                "\\"];
+				"/"
+                ];
                 
-const frequency = 50;
+const ASCIIrefreshTime = 50;
 
 export default {
     name: 'projects',
@@ -48,9 +49,7 @@ export default {
     },
     computed: {
         loadProjectView: function() {
-            setTimeout(() => {
-                this.counter = (this.counter + 1) % 4;
-            }, frequency)
+            this.loadProjectViewAsync();
             return ASCIIs[this.counter];
         }
     },
@@ -96,6 +95,11 @@ export default {
             }.bind(this)
             xmlHttp.open("GET", link, true);
             xmlHttp.send(null);
+        },
+        loadProjectViewAsync: function() {
+            setTimeout(() => {
+                this.counter = (this.counter + 1) % ASCIIs.length;
+            }, ASCIIrefreshTime)
         }
     },
     created: function() {
@@ -118,11 +122,11 @@ export default {
 .ascii {
     font-size: 4em;
     font-weight: bold;
-    position: fixed;
+    /* position: fixed;
     top: 20%;
-    left: 50%;
+    left: 50%; */
     /* bring your own prefixes */
-    transform: translate(-50%, -50%);
+    /* transform: translate(-50%, -50%); */
 }
 
 </style>

@@ -1,20 +1,21 @@
 <template>
   <div class="home" v-if="repoName">
     <h1 class="greeting">Hi,</h1>
-    <p class="intro">I'm a software developer</p>
+    <p class="intro">I'm a software developer, who</p>
     <ul class="main-points">
-      <li>Work 
-        <a class="info" v-bind:href="workplaceLink">@{{workplace}}</a>
+      <li>works at
+        <a class="info" v-bind:href="workplaceLink">{{workplace}}</a>
         as
         <a class="info" v-bind:href="linkedinProfileLink">{{workPosition}}</a>
       </li>
-      <li>Currently working on 
-        <a class="info" v-bind:href="commitLink">{{repoName}}</a>
-      </li>
-      <li>Created
+      <li>created
         <router-link to="/projects/" class="info" v-bind:href="postLink">these</router-link>
         projects
       </li>
+      <li>pushed commit to
+        <a class="info" v-bind:href="commitLink">{{repoName}}</a>
+      </li>
+
 
     </ul>
 
@@ -88,6 +89,7 @@ export default {
 
   .greeting {
     font-size: 4em;
+    /* font-family: 'Eczar', sans-serif; */
   }
 
   .intro {
