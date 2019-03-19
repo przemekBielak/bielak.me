@@ -1,6 +1,6 @@
 <template>
     <div class="home" v-if="loaded">
-        <h1 class="greeting">Projects.</h1>
+        <h1 class="greeting">Projects</h1>
         <ul class="main-points">
             <li v-for="project in projects" :key="project.name">
                 <a class="info" v-bind:href="project.link">{{project.name}}</a>
@@ -8,7 +8,7 @@
             </li>
         </ul>
         <p class="remarks">
-            *Information is automatically downloaded using GitHub API.
+            <!-- *Information is automatically downloaded using GitHub API. -->
         </p>
     </div>
     <div v-else class="home">
@@ -21,7 +21,7 @@
 const myGithubLink = "https://github.com/przemekBielak/";
 const excludedLanguages = ['Vim script', 'QMake', 'Batchfile', 'Makefile', 'CMake', 'OpenSCAD', 'TeX'];
 
-const ASCIIs = ["-",
+const ASCIIs = ["—",
 				"/",
 				"|",
                 "\\"];
@@ -118,7 +118,11 @@ export default {
 .ascii {
     font-size: 4em;
     font-weight: bold;
-    text-align: center;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
 }
 
 </style>

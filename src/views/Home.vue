@@ -1,7 +1,7 @@
 <template>
   <div class="home" v-if="repoName">
     <h1 class="greeting">Hi,</h1>
-    <p class="intro">I'm a software developer, who</p>
+    <p class="intro">I'm a software developer</p>
     <ul class="main-points">
       <li>Work 
         <a class="info" v-bind:href="workplaceLink">@{{workplace}}</a>
