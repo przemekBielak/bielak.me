@@ -1,35 +1,33 @@
-## My personal website.
+## My personal website
 
 ## Motivation
 Website is a portfolio of all my projects, contact info. Was created using vue and is hosted on a private server using nginx.
+
+## Live preview
+bielak.me
  
 ## Screenshots
-![ScreenShot](https://i.imgur.com/j1jIWsr.png)
+![Alt Text](https://i.imgur.com/atRYCTd.gif)
 
 ## Tech/framework used
 
 <b>Built with</b>
 - [Vue](https://vuejs.org/)
 - [Nginx](https://www.nginx.com/)
+- [Express.js](https://expressjs.com/)
 
 ## Features
-Website is running on a private server.  
-Nginx docker container is used as a reversed proxy to the website hosted also by nginx.  
+Website is running on a private server.
+Nginx is used as a reversed proxy to the website hosted by express server.
 SSL certificate was granted using LetsEncrypt.  
 
-Website is using Github API to automatically embed my current commit link to the website under "Currently working on"
+Website supports mobile and desktop layouts.
+Website is using Github API to automatically embed my current commit link to the website under "pushed last commit to".
 
 ## Installation
-Run in development mode: npm run serve  
 Deployment build: npm run build  
+Start server: node server.js
 
-## Tests
-Describe and show how to run the tests with code examples.
-
-
-#### Anything else that seems useful
 
 ## License
-A short snippet describing the license (MIT, Apache etc)
-
 MIT © [Przemysław Bielak]()

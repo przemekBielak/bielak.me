@@ -12,7 +12,7 @@
         <router-link to="/projects/" class="info" v-bind:href="postLink">these</router-link>
         projects
       </li>
-      <li>pushed commit to
+      <li>pushed last commit to
         <a class="info" v-bind:href="commitLink">{{repoName}}</a>
       </li>
 
@@ -97,7 +97,7 @@ export default {
   }
 
   .main-points {
-    font-size: 1.6em;
+    font-size: 1.4em;
     list-style-type: none;
     margin-left: 0;
     padding-left: 0;
