@@ -35,7 +35,7 @@ export default {
       post: "this post",
       postLink: "https://www.google.com/",
       workplace: "AVL",
-      workplaceLink: "https://www.avl-functions.com/en/",
+      workplaceLink: "https://www.avl.com/",
       linkedinProfileLink: 'https://www.linkedin.com/in/przemys%C5%82aw-bielak-052343122/',
       workPosition: 'Embedded Software Developer',
       repoName: null,
