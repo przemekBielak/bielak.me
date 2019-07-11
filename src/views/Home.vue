@@ -20,8 +20,10 @@
     </ul>
 
     <div class="footer">
+      <router-link to="/blog/" tag="button" class="footer-button">Blog</router-link>
       <button v-on:click="goToGithub" class="footer-button">Github</button>
       <button v-on:click="mailTo" class="footer-button">Contact me</button>
+
     </div>
   </div>
 </template>
