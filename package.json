@@ -7,7 +7,9 @@
     "build": "vue-cli-service build",
     "postinstall": "npm run build",
     "lint": "vue-cli-service lint",
-    "start": "node server.js"
+    "start": "node server.js",
+    "docs:dev": "vuepress dev Blog",
+    "docs:build": "vuepress build Blog"
   },
   "dependencies": {
     "connect-history-api-fallback": "^1.6.0",
@@ -24,7 +26,8 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.2",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^1.0.2"
   },
   "eslintConfig": {
     "root": true,
