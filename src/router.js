@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/views/Home.vue'
 import Blog from '@/views/Blog.vue'
 import Projects from '@/views/Projects.vue'
+import Game from '@/views/Game.vue'
 
 Vue.use(Router)
 
@@ -25,5 +26,10 @@ export default new Router({
       name: 'projects',
       component: Projects
     },
+    {
+      path: '/game/',
+      name: 'game',
+      component: Game
+    }
   ]
 })
