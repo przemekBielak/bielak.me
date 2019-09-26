@@ -29,17 +29,16 @@
 </template>
 
 <script>
-
 export default {
   name: 'home',
   data: function() {
     return {
       post: "this post",
       postLink: "https://www.google.com/",
-      workplace: "AVL",
-      workplaceLink: "https://www.avl.com/",
+      workplace: "Intive",
+      workplaceLink: "https://www.intive.com/",
       linkedinProfileLink: 'https://www.linkedin.com/in/przemys%C5%82aw-bielak-052343122/',
-      workPosition: 'Embedded Software Developer',
+      workPosition: 'Software Engineer',
       repoName: null,
       commitLink: null,
       email: 'przemyslaw.bielak@protonmail.com'
@@ -88,16 +87,13 @@ export default {
     max-width: 700px;
     display: inline-block;
   }
-
   .greeting {
     font-size: 4em;
     /* font-family: 'Eczar', sans-serif; */
   }
-
   .intro {
     font-size: 2em;
   }
-
   .main-points {
     font-size: 1.4em;
     list-style-type: none;
@@ -106,27 +102,22 @@ export default {
     list-style-position: outside; 
     list-style-type: none;
   }
-
   .main-points li {
     padding-top: 10px;
     padding-left: 1em;
     text-indent: -1em;
   }
-
   .main-points li::before {
     content: "> ";
     padding-right: 5px;
   }
-
   .info {
     color: #3D9970;
     /* text-decoration: none; */
   }
-
   li {
     font-size: 1.1em;
   }
-
   .footer {
     margin-top: 50px;
     width: 100%;
@@ -135,12 +126,10 @@ export default {
     flex-direction: row;
     justify-content: flex-start;
   }
-
   .footer-button {
     -webkit-appearance: button;
     -moz-appearance: button;
     appearance: button;
-
     background-color: white;
     border: 1px #3D9970 solid;
     border-radius: 2px;
@@ -149,11 +138,7 @@ export default {
     outline: none;
     font-size: 1.4em;
   }
-
   .footer-button:active {
     border-style: outset;
   }
-
-
 </style>
-

@@ -89,11 +89,7 @@ export default {
 
       this.ctx.font = "24px Space Mono";
       this.ctx.fillStyle = "#000";
-      this.ctx.fillText(
-        this.points,
-        this.canvas.width -20,
-        40
-      );
+      this.ctx.fillText(this.points, this.canvas.width - 20, 40);
 
       if (
         this.x + this.dx > this.canvas.width - this.ballRadius ||
@@ -138,11 +134,7 @@ export default {
       } else {
         this.ctx.font = "20px Space Mono";
         this.ctx.fillStyle = "#000";
-        this.ctx.fillText(
-          "Game Over, going to homepage",
-          10,
-          40
-        );
+        this.ctx.fillText("Game Over, going to homepage", 10, 40);
         setTimeout(() => {
           router.push({ path: "/" });
         }, 3000);
