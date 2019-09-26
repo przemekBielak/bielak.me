@@ -5,8 +5,7 @@
 </template>
 
 <script>
-
-import router from '../router'
+import router from "../router";
 
 let canvas;
 let ctx;
@@ -26,7 +25,6 @@ let leftPressed = false;
 let rightPressed = false;
 
 let points = 0;
-let gameover = false;
 
 function keyDownHandler(event) {
   if (event.keyCode == 39) {
@@ -60,59 +58,15 @@ function drawBall() {
   ctx.closePath();
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBall();
-  drawPaddle();
-
-  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-    dx = -dx;
-  }
-
-  if (y + dy < ballRadius) {
-    dy = -dy;
-  } else if (y + dy > canvas.height - ballRadius) {
-    ctx.font = "30px Arial";
-    ctx.fillText("Score: " + points, canvas.width / 2, canvas.height / 2);
-
-    gameover = true;
-    x = canvas.width / 2;
-    y = canvas.height / 2;
-    points = 0;
-  }
-
-  if (rightPressed && paddleX < canvas.width - paddleWidth) {
-    paddleX += paddledx;
-  } else if (leftPressed && paddleX > 0) {
-    paddleX -= paddledx;
-  }
-
-  if (
-    x > paddleX &&
-    x < paddleX + paddleWidth &&
-    y == canvas.height - ballRadius - paddleHeight
-  ) {
-    points++;
-    dy = -dy;
-    console.log(points);
-  }
-
-  x += dx;
-  y += dy;
-
-  if (!gameover) {
-    requestAnimationFrame(draw);
-  }
-}
-
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-
 
 export default {
   name: "game",
   data: function() {
-    return {};
+    return {
+        gameover: false
+    };
   },
   mounted: function() {
     canvas = document.getElementById("myCanvas");
@@ -123,11 +77,60 @@ export default {
 
     paddleX = (canvas.width - paddleWidth) / 2;
 
-    draw();
+    this.draw();
   },
   updated: function() {
-    if (gameover) {
-        router.push('home')
+    if (this.gameover) {
+      router.push("home");
+    }
+  },
+  methods: {
+    draw: function() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+      drawPaddle();
+
+      if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+      }
+
+      if (y + dy < ballRadius) {
+        dy = -dy;
+      } else if (y + dy > canvas.height - ballRadius) {
+        ctx.font = "30px Arial";
+        ctx.fillText("Score: " + points, canvas.width / 2, canvas.height / 2);
+
+        this.gameover = true;
+        x = canvas.width / 2;
+        y = canvas.height / 2;
+        points = 0;
+      }
+
+      if (rightPressed && paddleX < canvas.width - paddleWidth) {
+        paddleX += paddledx;
+      } else if (leftPressed && paddleX > 0) {
+        paddleX -= paddledx;
+      }
+
+      if (
+        x > paddleX &&
+        x < paddleX + paddleWidth &&
+        y == canvas.height - ballRadius - paddleHeight
+      ) {
+        points++;
+        dy = -dy;
+        console.log(points);
+      }
+
+      x += dx;
+      y += dy;
+
+      if (!this.gameover) {
+        requestAnimationFrame(this.draw);
+      }
+      else {
+        router.push({ path: '/' })
+      }
     }
   }
 };
