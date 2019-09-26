@@ -11,21 +11,21 @@ export default {
   name: "game",
   data: function() {
     return {
-        gameover: false,
-        canvas: 0,
-        ctx: 0,
-        x: 0,
-        y: 0,
-        ballRadius: 10,
-        dx: 2,
-        dy: -2,
-        paddleHeight: 10,
-        paddleWidth: 75,
-        paddleX : 0,
-        paddledx: 7,
-        points: 0,
-        leftPressed: false,
-        rightPressed: false,
+      gameover: false,
+      canvas: 0,
+      ctx: 0,
+      x: 0,
+      y: 0,
+      ballRadius: 10,
+      dx: 2,
+      dy: -2,
+      paddleHeight: 10,
+      paddleWidth: 75,
+      paddleX: 0,
+      paddledx: 7,
+      points: 0,
+      leftPressed: false,
+      rightPressed: false
     };
   },
   mounted: function() {
@@ -46,35 +46,40 @@ export default {
 
   methods: {
     keyDownHandler: function(event) {
-        if (event.keyCode == 39) {
-            this.rightPressed = true;
-        } else if (event.keyCode == 37) {
-            this.leftPressed = true;
-        }
+      if (event.keyCode == 39) {
+        this.rightPressed = true;
+      } else if (event.keyCode == 37) {
+        this.leftPressed = true;
+      }
     },
 
     keyUpHandler: function(event) {
-        if (event.keyCode == 39) {
-            this.rightPressed = false;
-        } else if (event.keyCode == 37) {
-            this.leftPressed = false;
-        }
+      if (event.keyCode == 39) {
+        this.rightPressed = false;
+      } else if (event.keyCode == 37) {
+        this.leftPressed = false;
+      }
     },
 
     drawPaddle: function() {
-        this.ctx.beginPath();
-        this.ctx.rect(this.paddleX, this.canvas.height - this.paddleHeight, this.paddleWidth, this.paddleHeight);
-        this.ctx.fillStyle = "blue";
-        this.ctx.fill();
-        this.ctx.closePath();
+      this.ctx.beginPath();
+      this.ctx.rect(
+        this.paddleX,
+        this.canvas.height - this.paddleHeight,
+        this.paddleWidth,
+        this.paddleHeight
+      );
+      this.ctx.fillStyle = "black";
+      this.ctx.fill();
+      this.ctx.closePath();
     },
 
     drawBall: function() {
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.ballRadius, 0, Math.PI * 2);
-        this.ctx.fillStyle = "red";
-        this.ctx.fill();
-        this.ctx.closePath();
+      this.ctx.beginPath();
+      this.ctx.arc(this.x, this.y, this.ballRadius, 0, Math.PI * 2);
+      this.ctx.fillStyle = "#3D9970";
+      this.ctx.fill();
+      this.ctx.closePath();
     },
 
     draw: function() {
@@ -82,23 +87,34 @@ export default {
       this.drawBall();
       this.drawPaddle();
 
-      if (this.x + this.dx > this.canvas.width - this.ballRadius || this.x + this.dx < this.ballRadius) {
+      this.ctx.font = "24px Space Mono";
+      this.ctx.fillStyle = "#000";
+      this.ctx.fillText(
+        this.points,
+        this.canvas.width -20,
+        40
+      );
+
+      if (
+        this.x + this.dx > this.canvas.width - this.ballRadius ||
+        this.x + this.dx < this.ballRadius
+      ) {
         this.dx = -this.dx;
       }
 
       if (this.y + this.dy < this.ballRadius) {
         this.dy = -this.dy;
       } else if (this.y + this.dy > this.canvas.height - this.ballRadius) {
-        this.ctx.font = "30px Arial";
-        this.ctx.fillText("Score: " + this.points, this.canvas.width / 2, this.canvas.height / 2);
-
         this.gameover = true;
         this.x = this.canvas.width / 2;
         this.y = this.canvas.height / 2;
         this.points = 0;
       }
 
-      if (this.rightPressed && this.paddleX < this.canvas.width - this.paddleWidth) {
+      if (
+        this.rightPressed &&
+        this.paddleX < this.canvas.width - this.paddleWidth
+      ) {
         this.paddleX += this.paddledx;
       } else if (this.leftPressed && this.paddleX > 0) {
         this.paddleX -= this.paddledx;
@@ -119,11 +135,17 @@ export default {
 
       if (!this.gameover) {
         requestAnimationFrame(this.draw);
-      }
-      else {
-          setTimeout(() => {
-              router.push({ path: '/' })
-          }, 3000);
+      } else {
+        this.ctx.font = "20px Space Mono";
+        this.ctx.fillStyle = "#000";
+        this.ctx.fillText(
+          "Game Over, going to homepage",
+          10,
+          40
+        );
+        setTimeout(() => {
+          router.push({ path: "/" });
+        }, 3000);
       }
     }
   }
