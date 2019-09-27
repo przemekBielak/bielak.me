@@ -118,6 +118,21 @@ export default {
       this.drawSnake();
       this.drawApple();
 
+      //check collisions with borders
+      if (
+        this.snakeBody.x[0] <= this.canvas.width - headSizeX &&
+        this.snakeBody.x[0] >= 0 &&
+        this.snakeBody.y[0] >= 0 &&
+        this.snakeBody.y[0] <= this.canvas.height - headSizeY
+      ) {
+        setTimeout(() => {
+          requestAnimationFrame(this.draw);
+        }, 100);
+      } else {
+        this.points = 0;
+        this.restart();
+      }
+
       const lastHeadX = this.snakeBody.x[0];
       const lastHeadY = this.snakeBody.y[0];
 
@@ -146,21 +161,6 @@ export default {
       } else {
         this.snakeBody.x.pop();
         this.snakeBody.y.pop();
-      }
-
-      //check collisions with borders
-      if (
-        this.snakeBody.x[0] <= this.canvas.width - headSizeX &&
-        this.snakeBody.x[0] >= 0 &&
-        this.snakeBody.y[0] >= 0 &&
-        this.snakeBody.y[0] <= this.canvas.height - headSizeY
-      ) {
-        setTimeout(() => {
-          requestAnimationFrame(this.draw);
-        }, 100);
-      } else {
-        this.points = 0;
-        this.restart();
       }
     }
   }
