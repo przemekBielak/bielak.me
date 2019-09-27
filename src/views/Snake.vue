@@ -96,60 +96,38 @@ export default {
       this.drawSnake();
       this.drawApple();
 
+      const lastHeadX = this.snakeBodyX[0];
+      const lastHeadY = this.snakeBodyY[0];
+
+      if (
+        this.direction == 3 &&
+        this.snakeBodyX[0] < this.canvas.width - headSizeX
+      ) {
+        this.snakeBodyX.unshift(lastHeadX + headDx);
+        this.snakeBodyY.unshift(lastHeadY);
+      } else if (this.direction == 2 && this.snakeBodyX[0] > 0) {
+        this.snakeBodyX.unshift(lastHeadX - headDx);
+        this.snakeBodyY.unshift(lastHeadY);
+      } else if (this.direction == 0 && this.snakeBodyY[0] > 0) {
+        this.snakeBodyY.unshift(lastHeadY - headDy);
+        this.snakeBodyX.unshift(lastHeadX);
+      } else if (
+        this.direction == 1 &&
+        this.snakeBodyY[0] < this.canvas.height - headSizeY
+      ) {
+        this.snakeBodyY.unshift(lastHeadY + headDy);
+        this.snakeBodyX.unshift(lastHeadX);
+      }
+
       // apple colision detection
       if (
         this.snakeBodyX[0] == this.appleX &&
         this.snakeBodyY[0] == this.appleY
       ) {
-        const lastSnakeX = this.snakeBodyX[0];
-        const lastSnakeY = this.snakeBodyY[0];
-
-        if (
-          this.direction == 3 &&
-          this.snakeBodyX[0] < this.canvas.width - headSizeX
-        ) {
-          this.snakeBodyX[0] += headDx;
-        } else if (this.direction == 2 && this.snakeBodyX[0] > 0) {
-          this.snakeBodyX[0] -= headDx;
-        } else if (this.direction == 0 && this.snakeBodyY[0] > 0) {
-          this.snakeBodyY[0] -= headDy;
-        } else if (
-          this.direction == 1 &&
-          this.snakeBodyY[0] < this.canvas.height - headSizeY
-        ) {
-          this.snakeBodyY[0] += headDy;
-        }
-
-        this.snakeBodyX.pop(lastSnakeX);
-        this.snakeBodyY.pop(lastSnakeY);
-
         this.snakeLen++;
         this.updateAppleX();
         this.updateAppleY();
       } else {
-        const lastHeadX = this.snakeBodyX[0];
-        const lastHeadY = this.snakeBodyY[0];
-
-        if (
-          this.direction == 3 &&
-          this.snakeBodyX[0] < this.canvas.width - headSizeX
-        ) {
-          this.snakeBodyX.unshift(lastHeadX + headDx);
-          this.snakeBodyY.unshift(lastHeadY);
-        } else if (this.direction == 2 && this.snakeBodyX[0] > 0) {
-          this.snakeBodyX.unshift(lastHeadX - headDx);
-          this.snakeBodyY.unshift(lastHeadY);
-        } else if (this.direction == 0 && this.snakeBodyY[0] > 0) {
-          this.snakeBodyY.unshift(lastHeadY - headDy);
-          this.snakeBodyX.unshift(lastHeadX);
-        } else if (
-          this.direction == 1 &&
-          this.snakeBodyY[0] < this.canvas.height - headSizeY
-        ) {
-          this.snakeBodyY.unshift(lastHeadY + headDy);
-          this.snakeBodyX.unshift(lastHeadX);
-        }
-
         this.snakeBodyX.pop();
         this.snakeBodyY.pop();
       }
