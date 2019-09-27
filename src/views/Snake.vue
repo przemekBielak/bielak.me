@@ -32,20 +32,7 @@ export default {
     this.canvas = document.getElementById("myCanvas");
     this.ctx = this.canvas.getContext("2d");
 
-    this.snakeBody.x[0] = this.canvas.width / 2;
-    this.snakeBody.y[0] = this.canvas.height / 2;
-    this.snakeBody.x[1] = this.canvas.width / 2;
-    this.snakeBody.y[1] = this.canvas.height / 2 - 10;
-    this.snakeBody.x[2] = this.canvas.width / 2;
-    this.snakeBody.y[2] = this.canvas.height / 2 - 20;
-    this.snakeBody.x[3] = this.canvas.width / 2;
-    this.snakeBody.y[4] = this.canvas.height / 2 - 30;
-
-    // random apple position
-    this.updateAppleX();
-    this.updateAppleY();
-
-    this.draw();
+    this.restart();
   },
   methods: {
     // 0 - up, 1 - down, 2 - left, 3 - right
@@ -113,26 +100,7 @@ export default {
       this.ctx.fill();
       this.ctx.closePath();
     },
-    draw: function() {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.drawSnake();
-      this.drawApple();
-
-      //check collisions with borders
-      if (
-        this.snakeBody.x[0] <= this.canvas.width - headSizeX &&
-        this.snakeBody.x[0] >= 0 &&
-        this.snakeBody.y[0] >= 0 &&
-        this.snakeBody.y[0] <= this.canvas.height - headSizeY
-      ) {
-        setTimeout(() => {
-          requestAnimationFrame(this.draw);
-        }, 100);
-      } else {
-        this.points = 0;
-        this.restart();
-      }
-
+    updateSnakePosition: function() {
       const lastHeadX = this.snakeBody.x[0];
       const lastHeadY = this.snakeBody.y[0];
 
@@ -150,7 +118,6 @@ export default {
         this.snakeBody.x.unshift(lastHeadX);
       }
 
-      // apple colision detection
       if (
         this.snakeBody.x[0] == this.appleX &&
         this.snakeBody.y[0] == this.appleY
@@ -162,6 +129,30 @@ export default {
         this.snakeBody.x.pop();
         this.snakeBody.y.pop();
       }
+    },
+    checkColision: function() {
+      //check collisions with borders
+      if (
+        this.snakeBody.x[0] <= this.canvas.width - headSizeX &&
+        this.snakeBody.x[0] >= 0 &&
+        this.snakeBody.y[0] >= 0 &&
+        this.snakeBody.y[0] <= this.canvas.height - headSizeY
+      ) {
+        setTimeout(() => {
+          requestAnimationFrame(this.draw);
+        }, 100);
+      } else {
+        this.points = 0;
+        this.restart();
+      }
+    },
+    draw: function() {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      this.drawApple();
+      this.updateSnakePosition();
+      this.checkColision();
+      this.drawSnake();
     }
   }
 };
