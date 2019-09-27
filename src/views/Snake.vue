@@ -16,8 +16,8 @@ export default {
     return {
       canvas: 0,
       ctx: 0,
-      headX: 0,
-      headY: 0,
+      snakeBodyX: [],
+      snakeBodyY: [],
       snakeLen: 1,
       appleX: 0,
       appleY: 0,
@@ -29,8 +29,14 @@ export default {
 
     this.canvas = document.getElementById("myCanvas");
     this.ctx = this.canvas.getContext("2d");
-    this.headX = this.canvas.width / 2;
-    this.headY = this.canvas.height / 2;
+    this.snakeBodyX[0] = this.canvas.width / 2;
+    this.snakeBodyY[0] = this.canvas.height / 2;
+    this.snakeBodyX[1] = this.canvas.width / 2;
+    this.snakeBodyY[1] = this.canvas.height / 2 - 10;
+    this.snakeBodyX[2] = this.canvas.width / 2;
+    this.snakeBodyY[2] = this.canvas.height / 2 - 20;
+    this.snakeBodyX[3] = this.canvas.width / 2;
+    this.snakeBodyY[4] = this.canvas.height / 2 - 30;
 
     // random apple position
     this.updateAppleX();
@@ -66,7 +72,14 @@ export default {
     },
     drawSnake: function() {
       this.ctx.beginPath();
-      this.ctx.rect(this.headX, this.headY, headSizeX, headSizeY);
+      for (let i = 0; i < this.snakeBodyX.length; i++) {
+        this.ctx.rect(
+          this.snakeBodyX[i],
+          this.snakeBodyY[i],
+          headSizeX,
+          headSizeY
+        );
+      }
       this.ctx.fillStyle = "black";
       this.ctx.fill();
       this.ctx.closePath();
@@ -83,25 +96,62 @@ export default {
       this.drawSnake();
       this.drawApple();
 
-      // snake controls
-      if (this.direction == 3 && this.headX < this.canvas.width - headSizeX) {
-        this.headX += headDx;
-      } else if (this.direction == 2 && this.headX > 0) {
-        this.headX -= headDx;
-      } else if (this.direction == 0 && this.headY > 0) {
-        this.headY -= headDy;
-      } else if (
-        this.direction == 1 &&
-        this.headY < this.canvas.height - headSizeY
-      ) {
-        this.headY += headDy;
-      }
-
       // apple colision detection
-      if (this.headX == this.appleX && this.headY == this.appleY) {
+      if (
+        this.snakeBodyX[0] == this.appleX &&
+        this.snakeBodyY[0] == this.appleY
+      ) {
+        const lastSnakeX = this.snakeBodyX[0];
+        const lastSnakeY = this.snakeBodyY[0];
+
+        if (
+          this.direction == 3 &&
+          this.snakeBodyX[0] < this.canvas.width - headSizeX
+        ) {
+          this.snakeBodyX[0] += headDx;
+        } else if (this.direction == 2 && this.snakeBodyX[0] > 0) {
+          this.snakeBodyX[0] -= headDx;
+        } else if (this.direction == 0 && this.snakeBodyY[0] > 0) {
+          this.snakeBodyY[0] -= headDy;
+        } else if (
+          this.direction == 1 &&
+          this.snakeBodyY[0] < this.canvas.height - headSizeY
+        ) {
+          this.snakeBodyY[0] += headDy;
+        }
+
+        this.snakeBodyX.pop(lastSnakeX);
+        this.snakeBodyY.pop(lastSnakeY);
+
+        this.snakeLen++;
         this.updateAppleX();
         this.updateAppleY();
-        this.snakeLen++;
+      } else {
+        const lastHeadX = this.snakeBodyX[0];
+        const lastHeadY = this.snakeBodyY[0];
+
+        if (
+          this.direction == 3 &&
+          this.snakeBodyX[0] < this.canvas.width - headSizeX
+        ) {
+          this.snakeBodyX.unshift(lastHeadX + headDx);
+          this.snakeBodyY.unshift(lastHeadY);
+        } else if (this.direction == 2 && this.snakeBodyX[0] > 0) {
+          this.snakeBodyX.unshift(lastHeadX - headDx);
+          this.snakeBodyY.unshift(lastHeadY);
+        } else if (this.direction == 0 && this.snakeBodyY[0] > 0) {
+          this.snakeBodyY.unshift(lastHeadY - headDy);
+          this.snakeBodyX.unshift(lastHeadX);
+        } else if (
+          this.direction == 1 &&
+          this.snakeBodyY[0] < this.canvas.height - headSizeY
+        ) {
+          this.snakeBodyY.unshift(lastHeadY + headDy);
+          this.snakeBodyX.unshift(lastHeadX);
+        }
+
+        this.snakeBodyX.pop();
+        this.snakeBodyY.pop();
       }
 
       setTimeout(() => {
