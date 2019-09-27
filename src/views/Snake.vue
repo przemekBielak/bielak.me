@@ -16,12 +16,14 @@ export default {
     return {
       canvas: 0,
       ctx: 0,
-      snakeBodyX: [],
-      snakeBodyY: [],
-      snakeLen: 1,
+      snakeBody: {
+        x: [],
+        y: []
+      },
       appleX: 0,
       appleY: 0,
-      direction: 0 // 0 - up, 1 - down, 2 - left, 3 - right
+      direction: 0, // 0 - up, 1 - down, 2 - left, 3 - right
+      points: 0
     };
   },
   mounted: function() {
@@ -29,14 +31,15 @@ export default {
 
     this.canvas = document.getElementById("myCanvas");
     this.ctx = this.canvas.getContext("2d");
-    this.snakeBodyX[0] = this.canvas.width / 2;
-    this.snakeBodyY[0] = this.canvas.height / 2;
-    this.snakeBodyX[1] = this.canvas.width / 2;
-    this.snakeBodyY[1] = this.canvas.height / 2 - 10;
-    this.snakeBodyX[2] = this.canvas.width / 2;
-    this.snakeBodyY[2] = this.canvas.height / 2 - 20;
-    this.snakeBodyX[3] = this.canvas.width / 2;
-    this.snakeBodyY[4] = this.canvas.height / 2 - 30;
+
+    this.snakeBody.x[0] = this.canvas.width / 2;
+    this.snakeBody.y[0] = this.canvas.height / 2;
+    this.snakeBody.x[1] = this.canvas.width / 2;
+    this.snakeBody.y[1] = this.canvas.height / 2 - 10;
+    this.snakeBody.x[2] = this.canvas.width / 2;
+    this.snakeBody.y[2] = this.canvas.height / 2 - 20;
+    this.snakeBody.x[3] = this.canvas.width / 2;
+    this.snakeBody.y[4] = this.canvas.height / 2 - 30;
 
     // random apple position
     this.updateAppleX();
@@ -70,12 +73,31 @@ export default {
           Math.round(Math.random() * (this.canvas.height - headSizeY)) / 10
         ) * 10;
     },
+    restart: function() {
+      this.direction = 0;
+      this.snakeBody.x = [];
+      this.snakeBody.y = [];
+      this.snakeBody.x[0] = this.canvas.width / 2;
+      this.snakeBody.y[0] = this.canvas.height / 2;
+      this.snakeBody.x[1] = this.canvas.width / 2;
+      this.snakeBody.y[1] = this.canvas.height / 2 - 10;
+      this.snakeBody.x[2] = this.canvas.width / 2;
+      this.snakeBody.y[2] = this.canvas.height / 2 - 20;
+      this.snakeBody.x[3] = this.canvas.width / 2;
+      this.snakeBody.y[4] = this.canvas.height / 2 - 30;
+
+      // random apple position
+      this.updateAppleX();
+      this.updateAppleY();
+
+      this.draw();
+    },
     drawSnake: function() {
       this.ctx.beginPath();
-      for (let i = 0; i < this.snakeBodyX.length; i++) {
+      for (let i = 0; i < this.snakeBody.x.length; i++) {
         this.ctx.rect(
-          this.snakeBodyX[i],
-          this.snakeBodyY[i],
+          this.snakeBody.x[i],
+          this.snakeBody.y[i],
           headSizeX,
           headSizeY
         );
@@ -96,45 +118,50 @@ export default {
       this.drawSnake();
       this.drawApple();
 
-      const lastHeadX = this.snakeBodyX[0];
-      const lastHeadY = this.snakeBodyY[0];
+      const lastHeadX = this.snakeBody.x[0];
+      const lastHeadY = this.snakeBody.y[0];
 
-      if (
-        this.direction == 3 &&
-        this.snakeBodyX[0] < this.canvas.width - headSizeX
-      ) {
-        this.snakeBodyX.unshift(lastHeadX + headDx);
-        this.snakeBodyY.unshift(lastHeadY);
-      } else if (this.direction == 2 && this.snakeBodyX[0] > 0) {
-        this.snakeBodyX.unshift(lastHeadX - headDx);
-        this.snakeBodyY.unshift(lastHeadY);
-      } else if (this.direction == 0 && this.snakeBodyY[0] > 0) {
-        this.snakeBodyY.unshift(lastHeadY - headDy);
-        this.snakeBodyX.unshift(lastHeadX);
-      } else if (
-        this.direction == 1 &&
-        this.snakeBodyY[0] < this.canvas.height - headSizeY
-      ) {
-        this.snakeBodyY.unshift(lastHeadY + headDy);
-        this.snakeBodyX.unshift(lastHeadX);
+      if (this.direction == 3) {
+        this.snakeBody.x.unshift(lastHeadX + headDx);
+        this.snakeBody.y.unshift(lastHeadY);
+      } else if (this.direction == 2) {
+        this.snakeBody.x.unshift(lastHeadX - headDx);
+        this.snakeBody.y.unshift(lastHeadY);
+      } else if (this.direction == 0) {
+        this.snakeBody.y.unshift(lastHeadY - headDy);
+        this.snakeBody.x.unshift(lastHeadX);
+      } else if (this.direction == 1) {
+        this.snakeBody.y.unshift(lastHeadY + headDy);
+        this.snakeBody.x.unshift(lastHeadX);
       }
 
       // apple colision detection
       if (
-        this.snakeBodyX[0] == this.appleX &&
-        this.snakeBodyY[0] == this.appleY
+        this.snakeBody.x[0] == this.appleX &&
+        this.snakeBody.y[0] == this.appleY
       ) {
-        this.snakeLen++;
         this.updateAppleX();
         this.updateAppleY();
+        this.points++;
       } else {
-        this.snakeBodyX.pop();
-        this.snakeBodyY.pop();
+        this.snakeBody.x.pop();
+        this.snakeBody.y.pop();
       }
 
-      setTimeout(() => {
-        requestAnimationFrame(this.draw);
-      }, 100);
+      //check collisions with borders
+      if (
+        this.snakeBody.x[0] <= this.canvas.width - headSizeX &&
+        this.snakeBody.x[0] >= 0 &&
+        this.snakeBody.y[0] >= 0 &&
+        this.snakeBody.y[0] <= this.canvas.height - headSizeY
+      ) {
+        setTimeout(() => {
+          requestAnimationFrame(this.draw);
+        }, 100);
+      } else {
+        this.points = 0;
+        this.restart();
+      }
     }
   }
 };
