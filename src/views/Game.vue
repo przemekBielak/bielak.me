@@ -38,7 +38,6 @@ export default {
     this.ctx = this.canvas.getContext("2d");
     this.x = this.canvas.width / 2;
     this.y = this.canvas.height / 2;
-
     this.paddleX = (this.canvas.width - this.paddleWidth) / 2;
 
     this.draw();
@@ -134,8 +133,23 @@ export default {
       } else {
         this.ctx.font = "20px Space Mono";
         this.ctx.fillStyle = "#000";
-        this.ctx.fillText("Game Over, going to homepage", 10, 40);
+        this.ctx.fillText("Game Over", 10, 40);
+
+        const intervalIncrement = 0.1;
+        let IntervalCounter = 0;
+        const interval = setInterval(() => {
+          IntervalCounter += intervalIncrement;
+          console.log(IntervalCounter);
+          this.ctx.clearRect(0, 60, this.canvas.width - 100, 160);
+          this.ctx.fillText(
+            "Going home in: " + Math.round(IntervalCounter * 10) / 10 + "s",
+            10,
+            80
+          );
+        }, 100);
+
         setTimeout(() => {
+          clearInterval(interval);
           router.push({ path: "/" });
         }, 3000);
       }
