@@ -122,6 +122,19 @@ export default {
       ) {
         this.points++;
         this.dy = -this.dy;
+
+        // // speed up ball
+        // if(this.dx < 0) {
+        //     this.dx--;
+        // }else {
+        //     this.dx++;
+        // }
+        // if(this.dy < 0) {
+        //     this.dy--;
+        // }else {
+        //     this.dy++;
+        // }
+
         console.log(this.points);
       }
 
@@ -136,9 +149,10 @@ export default {
         this.ctx.fillText("Game Over", 10, 40);
 
         const intervalIncrement = 0.1;
-        let IntervalCounter = 0;
+        const intervalTimeout = 3000;
+        let IntervalCounter = intervalTimeout / 1000;
         const interval = setInterval(() => {
-          IntervalCounter += intervalIncrement;
+          IntervalCounter -= intervalIncrement;
           console.log(IntervalCounter);
           this.ctx.clearRect(0, 60, this.canvas.width - 100, 160);
           this.ctx.fillText(
@@ -151,7 +165,7 @@ export default {
         setTimeout(() => {
           clearInterval(interval);
           router.push({ path: "/" });
-        }, 3000);
+        }, intervalTimeout);
       }
     }
   }

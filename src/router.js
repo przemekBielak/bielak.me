@@ -4,6 +4,9 @@ import Home from '@/views/Home.vue'
 import Blog from '@/views/Blog.vue'
 import Projects from '@/views/Projects.vue'
 import Game from '@/views/Game.vue'
+import Ml from '@/views/Ml.vue'
+import Snake from '@/views/Snake.vue'
+
 
 Vue.use(Router)
 
@@ -30,6 +33,16 @@ export default new Router({
       path: '/game/',
       name: 'game',
       component: Game
+    },
+    {
+      path: '/ml/',
+      name: 'ml',
+      component: Ml
+    },
+    {
+      path: '/snake/',
+      name: 'snake',
+      component: Snake
     }
   ]
 })
