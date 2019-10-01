@@ -22,7 +22,8 @@ export default {
       },
       appleX: 0,
       appleY: 0,
-      direction: 0, // 0 - up, 1 - down, 2 - left, 3 - right
+      direction: 0, // 0 - up, 1 - down, 2 - left, 3 - right,
+      lastDirection: 0,
       points: 0
     };
   },
@@ -37,13 +38,14 @@ export default {
   methods: {
     // 0 - up, 1 - down, 2 - left, 3 - right
     keyDownHandler: function(event) {
-      if (event.keyCode == 39) {
+      this.lastDirection = this.direction;
+      if (event.keyCode == 39 && this.lastDirection != 2) {
         this.direction = 3;
-      } else if (event.keyCode == 37) {
+      } else if (event.keyCode == 37 && this.lastDirection != 3) {
         this.direction = 2;
-      } else if (event.keyCode == 38) {
+      } else if (event.keyCode == 38 && this.lastDirection != 1) {
         this.direction = 0;
-      } else if (event.keyCode == 40) {
+      } else if (event.keyCode == 40 && this.lastDirection != 0) {
         this.direction = 1;
       }
     },
@@ -131,19 +133,36 @@ export default {
       }
     },
     checkColision: function() {
+      let collision = false;
+
+      if (this.snakeBody.x.length !== 0) {
+        for (let i = 3; i < this.snakeBody.x.length; i++) {
+          if (
+            this.snakeBody.x[i] == this.snakeBody.x[0] &&
+            this.snakeBody.y[i] == this.snakeBody.y[0]
+          ) {
+            collision = true;
+          }
+        }
+      }
+
       //check collisions with borders
       if (
-        this.snakeBody.x[0] <= this.canvas.width - headSizeX &&
-        this.snakeBody.x[0] >= 0 &&
-        this.snakeBody.y[0] >= 0 &&
-        this.snakeBody.y[0] <= this.canvas.height - headSizeY
+        this.snakeBody.x[0] > this.canvas.width - headSizeX ||
+        this.snakeBody.x[0] < 0 ||
+        this.snakeBody.y[0] < 0 ||
+        this.snakeBody.y[0] > this.canvas.height - headSizeY
       ) {
+        collision = true;
+      }
+
+      if (collision) {
+        this.points = 0;
+        this.restart();
+      } else {
         setTimeout(() => {
           requestAnimationFrame(this.draw);
         }, 100);
-      } else {
-        this.points = 0;
-        this.restart();
       }
     },
     draw: function() {
