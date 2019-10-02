@@ -17,13 +17,14 @@ export default {
       canvas: 0,
       ctx: 0,
       snakeBody: [],
-      appleX: 0,
-      appleY: 0,
+      appleX: [],
+      appleY: [],
       direction: [], // 0 - up, 1 - down, 2 - left, 3 - right,
       lastDirection: [],
       points: [],
       numOfSnakes: 10,
       collision: [],
+      snakeColor: []
     };
   },
   mounted: function() {
@@ -58,20 +59,23 @@ export default {
     },
 
     updateAppleX: function() {
-      this.appleX =
-        Math.round(
-          Math.round(Math.random() * (this.canvas.width - headSizeX)) / 10
-        ) * 10;
+      for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+        this.appleX[snakeNum] =
+          Math.round(
+            Math.round(Math.random() * (this.canvas.width - headSizeX)) / 10
+          ) * 10;
+      }
     },
     updateAppleY: function() {
-      this.appleY =
-        Math.round(
-          Math.round(Math.random() * (this.canvas.height - headSizeY)) / 10
-        ) * 10;
+      for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+        this.appleY[snakeNum] =
+          Math.round(
+            Math.round(Math.random() * (this.canvas.height - headSizeY)) / 10
+          ) * 10;
+      }
     },
     restart: function() {
-      console.log('restartrd');
-      this.collision = []; 
+      this.collision = [];
       for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
         this.direction[snakeNum] = 0;
         this.collision.push(false);
@@ -83,6 +87,8 @@ export default {
         this.snakeBody[snakeNum].y[2] = this.canvas.height / 2 - 20;
         this.snakeBody[snakeNum].x[3] = this.canvas.width / 2;
         this.snakeBody[snakeNum].y[4] = this.canvas.height / 2 - 30;
+
+        this.snakeColor[snakeNum] = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}`;
       }
 
       // random apple position
@@ -108,11 +114,20 @@ export default {
       this.ctx.closePath();
     },
     drawApple: function() {
-      this.ctx.beginPath();
-      this.ctx.rect(this.appleX, this.appleY, headSizeX, headSizeY);
-      this.ctx.fillStyle = "red";
-      this.ctx.fill();
-      this.ctx.closePath();
+      for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+        this.ctx.beginPath();
+        if (this.collision[snakeNum] === false) {
+          this.ctx.rect(
+            this.appleX[snakeNum],
+            this.appleY[snakeNum],
+            headSizeX,
+            headSizeY
+          );
+          this.ctx.fillStyle = this.snakeColor[snakeNum];
+          this.ctx.fill();
+          this.ctx.closePath();
+        }
+      }
     },
     updateSnakePosition: function() {
       let lastHeadX = [];
@@ -140,8 +155,8 @@ export default {
         }
 
         if (
-          this.snakeBody[snakeNum].x[0] == this.appleX &&
-          this.snakeBody[snakeNum].y[0] == this.appleY
+          this.snakeBody[snakeNum].x[0] == this.appleX[snakeNum] &&
+          this.snakeBody[snakeNum].y[0] == this.appleY[snakeNum]
         ) {
           this.updateAppleX();
           this.updateAppleY();
@@ -164,7 +179,6 @@ export default {
               this.points[snakeNum] = 0;
               this.snakeBody[snakeNum].x = [];
               this.snakeBody[snakeNum].y = [];
-              console.log(this.collision);
             }
           }
         }
@@ -180,7 +194,6 @@ export default {
           this.points[snakeNum] = 0;
           this.snakeBody[snakeNum].x = [];
           this.snakeBody[snakeNum].y = [];
-          console.log(this.collision);
         }
       }
 
