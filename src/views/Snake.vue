@@ -135,7 +135,7 @@ export default {
 
       for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
         // comment this line when using one snake and keyboard control
-        this.direction[snakeNum] = Math.round(Math.random() * 3);
+        this.direction[snakeNum] = Math.floor(Math.random() * 4);
 
         lastHeadX = this.snakeBody[snakeNum].x[0];
         lastHeadY = this.snakeBody[snakeNum].y[0];
