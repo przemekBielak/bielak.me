@@ -16,15 +16,14 @@ export default {
     return {
       canvas: 0,
       ctx: 0,
-      snakeBody: {
-        x: [],
-        y: []
-      },
+      snakeBody: [],
       appleX: 0,
       appleY: 0,
-      direction: 0, // 0 - up, 1 - down, 2 - left, 3 - right,
-      lastDirection: 0,
-      points: 0
+      direction: [], // 0 - up, 1 - down, 2 - left, 3 - right,
+      lastDirection: [],
+      points: [],
+      numOfSnakes: 10,
+      collision: [],
     };
   },
   mounted: function() {
@@ -33,20 +32,28 @@ export default {
     this.canvas = document.getElementById("myCanvas");
     this.ctx = this.canvas.getContext("2d");
 
+    for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+      this.direction[snakeNum] = 0;
+      this.lastDirection[snakeNum] = 0;
+      this.points[snakeNum] = 0;
+
+      this.snakeBody.push({ x: [], y: [] });
+    }
+
     this.restart();
   },
   methods: {
     // 0 - up, 1 - down, 2 - left, 3 - right
     keyDownHandler: function(event) {
-      this.lastDirection = this.direction;
-      if (event.keyCode == 39 && this.lastDirection != 2) {
-        this.direction = 3;
-      } else if (event.keyCode == 37 && this.lastDirection != 3) {
-        this.direction = 2;
-      } else if (event.keyCode == 38 && this.lastDirection != 1) {
-        this.direction = 0;
-      } else if (event.keyCode == 40 && this.lastDirection != 0) {
-        this.direction = 1;
+      this.lastDirection[0] = this.direction[0];
+      if (event.keyCode == 39 && this.lastDirection[0] != 2) {
+        this.direction[0] = 3;
+      } else if (event.keyCode == 37 && this.lastDirection[0] != 3) {
+        this.direction[0] = 2;
+      } else if (event.keyCode == 38 && this.lastDirection[0] != 1) {
+        this.direction[0] = 0;
+      } else if (event.keyCode == 40 && this.lastDirection[0] != 0) {
+        this.direction[0] = 1;
       }
     },
 
@@ -63,17 +70,20 @@ export default {
         ) * 10;
     },
     restart: function() {
-      this.direction = 0;
-      this.snakeBody.x = [];
-      this.snakeBody.y = [];
-      this.snakeBody.x[0] = this.canvas.width / 2;
-      this.snakeBody.y[0] = this.canvas.height / 2;
-      this.snakeBody.x[1] = this.canvas.width / 2;
-      this.snakeBody.y[1] = this.canvas.height / 2 - 10;
-      this.snakeBody.x[2] = this.canvas.width / 2;
-      this.snakeBody.y[2] = this.canvas.height / 2 - 20;
-      this.snakeBody.x[3] = this.canvas.width / 2;
-      this.snakeBody.y[4] = this.canvas.height / 2 - 30;
+      console.log('restartrd');
+      this.collision = []; 
+      for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+        this.direction[snakeNum] = 0;
+        this.collision.push(false);
+        this.snakeBody[snakeNum].x[0] = this.canvas.width / 2;
+        this.snakeBody[snakeNum].y[0] = this.canvas.height / 2;
+        this.snakeBody[snakeNum].x[1] = this.canvas.width / 2;
+        this.snakeBody[snakeNum].y[1] = this.canvas.height / 2 - 10;
+        this.snakeBody[snakeNum].x[2] = this.canvas.width / 2;
+        this.snakeBody[snakeNum].y[2] = this.canvas.height / 2 - 20;
+        this.snakeBody[snakeNum].x[3] = this.canvas.width / 2;
+        this.snakeBody[snakeNum].y[4] = this.canvas.height / 2 - 30;
+      }
 
       // random apple position
       this.updateAppleX();
@@ -83,13 +93,15 @@ export default {
     },
     drawSnake: function() {
       this.ctx.beginPath();
-      for (let i = 0; i < this.snakeBody.x.length; i++) {
-        this.ctx.rect(
-          this.snakeBody.x[i],
-          this.snakeBody.y[i],
-          headSizeX,
-          headSizeY
-        );
+      for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+        for (let i = 0; i < this.snakeBody[snakeNum].x.length; i++) {
+          this.ctx.rect(
+            this.snakeBody[snakeNum].x[i],
+            this.snakeBody[snakeNum].y[i],
+            headSizeX,
+            headSizeY
+          );
+        }
       }
       this.ctx.fillStyle = "black";
       this.ctx.fill();
@@ -103,61 +115,82 @@ export default {
       this.ctx.closePath();
     },
     updateSnakePosition: function() {
-      const lastHeadX = this.snakeBody.x[0];
-      const lastHeadY = this.snakeBody.y[0];
+      let lastHeadX = [];
+      let lastHeadY = [];
 
-      if (this.direction == 3) {
-        this.snakeBody.x.unshift(lastHeadX + headDx);
-        this.snakeBody.y.unshift(lastHeadY);
-      } else if (this.direction == 2) {
-        this.snakeBody.x.unshift(lastHeadX - headDx);
-        this.snakeBody.y.unshift(lastHeadY);
-      } else if (this.direction == 0) {
-        this.snakeBody.y.unshift(lastHeadY - headDy);
-        this.snakeBody.x.unshift(lastHeadX);
-      } else if (this.direction == 1) {
-        this.snakeBody.y.unshift(lastHeadY + headDy);
-        this.snakeBody.x.unshift(lastHeadX);
-      }
+      for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+        // comment this line when using one snake and keyboard control
+        this.direction[snakeNum] = Math.round(Math.random() * 3);
 
-      if (
-        this.snakeBody.x[0] == this.appleX &&
-        this.snakeBody.y[0] == this.appleY
-      ) {
-        this.updateAppleX();
-        this.updateAppleY();
-        this.points++;
-      } else {
-        this.snakeBody.x.pop();
-        this.snakeBody.y.pop();
+        lastHeadX = this.snakeBody[snakeNum].x[0];
+        lastHeadY = this.snakeBody[snakeNum].y[0];
+
+        if (this.direction[snakeNum] == 3) {
+          this.snakeBody[snakeNum].x.unshift(lastHeadX + headDx);
+          this.snakeBody[snakeNum].y.unshift(lastHeadY);
+        } else if (this.direction[snakeNum] == 2) {
+          this.snakeBody[snakeNum].x.unshift(lastHeadX - headDx);
+          this.snakeBody[snakeNum].y.unshift(lastHeadY);
+        } else if (this.direction[snakeNum] == 0) {
+          this.snakeBody[snakeNum].y.unshift(lastHeadY - headDy);
+          this.snakeBody[snakeNum].x.unshift(lastHeadX);
+        } else if (this.direction[snakeNum] == 1) {
+          this.snakeBody[snakeNum].y.unshift(lastHeadY + headDy);
+          this.snakeBody[snakeNum].x.unshift(lastHeadX);
+        }
+
+        if (
+          this.snakeBody[snakeNum].x[0] == this.appleX &&
+          this.snakeBody[snakeNum].y[0] == this.appleY
+        ) {
+          this.updateAppleX();
+          this.updateAppleY();
+          this.points[snakeNum]++;
+        } else {
+          this.snakeBody[snakeNum].x.pop();
+          this.snakeBody[snakeNum].y.pop();
+        }
       }
     },
     checkColision: function() {
-      let collision = false;
-
-      if (this.snakeBody.x.length !== 0) {
-        for (let i = 3; i < this.snakeBody.x.length; i++) {
-          if (
-            this.snakeBody.x[i] == this.snakeBody.x[0] &&
-            this.snakeBody.y[i] == this.snakeBody.y[0]
-          ) {
-            collision = true;
+      for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
+        if (this.snakeBody[snakeNum].x.length !== 0) {
+          for (let i = 3; i < this.snakeBody[snakeNum].x.length; i++) {
+            if (
+              this.snakeBody[snakeNum].x[i] == this.snakeBody[snakeNum].x[0] &&
+              this.snakeBody[snakeNum].y[i] == this.snakeBody[snakeNum].y[0]
+            ) {
+              this.collision[snakeNum] = true;
+              this.points[snakeNum] = 0;
+              this.snakeBody[snakeNum].x = [];
+              this.snakeBody[snakeNum].y = [];
+              console.log(this.collision);
+            }
           }
+        }
+
+        //check collisions with borders
+        if (
+          this.snakeBody[snakeNum].x[0] > this.canvas.width - headSizeX ||
+          this.snakeBody[snakeNum].x[0] < 0 ||
+          this.snakeBody[snakeNum].y[0] < 0 ||
+          this.snakeBody[snakeNum].y[0] > this.canvas.height - headSizeY
+        ) {
+          this.collision[snakeNum] = true;
+          this.points[snakeNum] = 0;
+          this.snakeBody[snakeNum].x = [];
+          this.snakeBody[snakeNum].y = [];
+          console.log(this.collision);
         }
       }
 
-      //check collisions with borders
       if (
-        this.snakeBody.x[0] > this.canvas.width - headSizeX ||
-        this.snakeBody.x[0] < 0 ||
-        this.snakeBody.y[0] < 0 ||
-        this.snakeBody.y[0] > this.canvas.height - headSizeY
+        this.collision.every(item => {
+          if (item == true) {
+            return true;
+          }
+        })
       ) {
-        collision = true;
-      }
-
-      if (collision) {
-        this.points = 0;
         this.restart();
       } else {
         setTimeout(() => {
