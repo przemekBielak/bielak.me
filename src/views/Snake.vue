@@ -1,6 +1,6 @@
 <template>
   <div id="snake">
-    <canvas id="myCanvas" width="480" height="320"></canvas>
+    <canvas id="myCanvas" width="300" height="180"></canvas>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
       direction: [], // 0 - up, 1 - down, 2 - left, 3 - right,
       lastDirection: [],
       points: [],
-      numOfSnakes: 10,
+      numOfSnakes: 1,
       collision: [],
       snakeColor: []
     };
@@ -88,7 +88,11 @@ export default {
         this.snakeBody[snakeNum].x[3] = this.canvas.width / 2;
         this.snakeBody[snakeNum].y[4] = this.canvas.height / 2 - 30;
 
-        this.snakeColor[snakeNum] = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}`;
+        this.snakeColor[snakeNum] = `rgb(${Math.floor(
+          Math.random() * 256
+        )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+          Math.random() * 256
+        )}`;
       }
 
       // random apple position
@@ -132,6 +136,8 @@ export default {
     updateSnakePosition: function() {
       let lastHeadX = [];
       let lastHeadY = [];
+      let lastAppleDistance = [];
+      let currentAppleDistance = [];
 
       for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
         // comment this line when using one snake and keyboard control
@@ -139,6 +145,10 @@ export default {
 
         lastHeadX = this.snakeBody[snakeNum].x[0];
         lastHeadY = this.snakeBody[snakeNum].y[0];
+        lastAppleDistance[snakeNum] = Math.sqrt(
+          Math.pow(this.appleX[snakeNum] - this.snakeBody[snakeNum].x[0], 2) +
+            Math.pow(this.appleY[snakeNum] - this.snakeBody[snakeNum].y[0], 2)
+        );
 
         if (this.direction[snakeNum] == 3) {
           this.snakeBody[snakeNum].x.unshift(lastHeadX + headDx);
@@ -154,18 +164,32 @@ export default {
           this.snakeBody[snakeNum].x.unshift(lastHeadX);
         }
 
+        currentAppleDistance[snakeNum] = Math.sqrt(
+          Math.pow(this.appleX[snakeNum] - this.snakeBody[snakeNum].x[0], 2) +
+            Math.pow(this.appleY[snakeNum] - this.snakeBody[snakeNum].y[0], 2)
+        );
+
+        if(currentAppleDistance[snakeNum] < lastAppleDistance[snakeNum]) {
+          this.points[snakeNum] += 0.1;
+        }
+        else {
+          this.points[snakeNum] -= 0.2;
+        }
+
         if (
           this.snakeBody[snakeNum].x[0] == this.appleX[snakeNum] &&
           this.snakeBody[snakeNum].y[0] == this.appleY[snakeNum]
         ) {
           this.updateAppleX();
           this.updateAppleY();
-          this.points[snakeNum]++;
+          this.points[snakeNum] += 1;
         } else {
           this.snakeBody[snakeNum].x.pop();
           this.snakeBody[snakeNum].y.pop();
         }
       }
+
+      // console.log(this.points);
     },
     checkColision: function() {
       for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
@@ -176,7 +200,7 @@ export default {
               this.snakeBody[snakeNum].y[i] == this.snakeBody[snakeNum].y[0]
             ) {
               this.collision[snakeNum] = true;
-              this.points[snakeNum] = 0;
+              this.points[snakeNum] -= 2;
               this.snakeBody[snakeNum].x = [];
               this.snakeBody[snakeNum].y = [];
             }
@@ -206,9 +230,9 @@ export default {
       ) {
         this.restart();
       } else {
-        setTimeout(() => {
-          requestAnimationFrame(this.draw);
-        }, 100);
+        // setTimeout(() => {
+        requestAnimationFrame(this.draw);
+        // }, 100);
       }
     },
     draw: function() {
