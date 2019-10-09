@@ -35,4 +35,11 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    color: #e4e4e4;
+  }
+}
+
 </style>
