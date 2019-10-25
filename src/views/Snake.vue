@@ -5,10 +5,28 @@
 </template>
 
 <script>
+import * as tf from "@tensorflow/tfjs";
+
 const headSizeX = 10;
 const headSizeY = 10;
 const headDx = 10;
 const headDy = 10;
+
+const NEURONS = 8;
+
+const hiddenLayer = tf.layers.dense({
+  units: NEURONS,
+  inputShape: [4],
+  activation: "relu",
+  kernelInitializer: "leCunNormal",
+  useBias: true,
+  biasInitializer: "randomNormal"
+});
+
+const outputLayer = tf.layers.dense({
+  units: 4,
+  activation: "softmax"
+});
 
 export default {
   name: "snake",
@@ -22,13 +40,19 @@ export default {
       direction: [], // 0 - up, 1 - down, 2 - left, 3 - right,
       lastDirection: [],
       points: [],
-      numOfSnakes: 1,
+      numOfSnakes: 10,
       collision: [],
-      snakeColor: []
+      snakeColor: [],
+      model: null
     };
   },
   mounted: function() {
     document.addEventListener("keydown", this.keyDownHandler, false);
+
+    this.model = tf.sequential();
+    this.model.add(hiddenLayer);
+    this.model.add(outputLayer);
+    this.model.compile({ loss: "meanSquaredError", optimizer: "sgd" });
 
     this.canvas = document.getElementById("myCanvas");
     this.ctx = this.canvas.getContext("2d");
@@ -141,7 +165,19 @@ export default {
 
       for (let snakeNum = 0; snakeNum < this.numOfSnakes; snakeNum++) {
         // comment this line when using one snake and keyboard control
-        this.direction[snakeNum] = Math.floor(Math.random() * 4);
+        // this.direction[snakeNum] = Math.floor(Math.random() * 4);
+        // this.direction[snakeNum] = model
+
+        this.model
+          .predict(
+            tf.tensor2d([
+              this.appleX[snakeNum],
+              this.appleY[snakeNum],
+              this.snakeBody[snakeNum].x[0],
+              this.snakeBody[snakeNum].y[0]
+            ])
+          )
+          .print();
 
         lastHeadX = this.snakeBody[snakeNum].x[0];
         lastHeadY = this.snakeBody[snakeNum].y[0];
@@ -169,10 +205,9 @@ export default {
             Math.pow(this.appleY[snakeNum] - this.snakeBody[snakeNum].y[0], 2)
         );
 
-        if(currentAppleDistance[snakeNum] < lastAppleDistance[snakeNum]) {
+        if (currentAppleDistance[snakeNum] < lastAppleDistance[snakeNum]) {
           this.points[snakeNum] += 0.1;
-        }
-        else {
+        } else {
           this.points[snakeNum] -= 0.2;
         }
 
