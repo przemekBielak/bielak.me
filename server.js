@@ -16,3 +16,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+
+// how to start:
+// sudo docker build -t bielak.me-node .   
+// sudo docker run -d -p 8080:8080 -v /home/przemek/www/bielak.me/files:/usr/src/bielak.me/files  bielak.me-node
